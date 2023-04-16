@@ -3,14 +3,31 @@
 using namespace std;
 int len_char (char *p);
 void split(char* cadena,char**subcadenas,char sep, int nf);
-void leer_cursos(char ***cursos);
+void leer_cursos(char ***cursos,char[]);
+int saltoschar(char name_file[]);
+void asignar_memoria(char***,int saltos);
+void liberar_memoria(char***, int saltos);
 int main()
 {
 
-    char*** ptr3(0);
-    //leer_cursos(ptr3);
+    //char*** ptr3 = nullptr;
+    char name_file[64]=" ";
+    int saltos = saltoschar(name_file);
+    char ***ptr3 = new char **[saltos+1];
 
-    int n = 3, m = 5, p = 20; // dimensiones del arreglo
+    leer_cursos(ptr3,name_file);
+    for(int i = 0;i<saltos+1;i++){
+        for (int j = 0; j < 5; j++) {
+            cout << ptr3[i][j];
+            cout << " ";
+        }
+        cout << endl;
+    }
+    liberar_memoria(ptr3,saltos);
+
+
+
+    /*int n = 3, m = 5, p = 20; // dimensiones del arreglo
 
     // Asignar memoria dinámica al puntero triple
     ptr3 = new char**[n];
@@ -59,10 +76,74 @@ int main()
        delete[] ptr3[i];
     }
     delete[] ptr3;
+        */
+
+    //-------------------------------------------------------------
+
+    /*
+    const char ***cursos = new const char**[4];
+    for(int i = 0; i<4;i++){
+        cursos[i]= new const char *[5];
+        for(int j = 0; j<5; j++){
+            cursos[i][j] = "Informacion   ";
+        }
+    }
+    char **matrix;
+    char cadena[20] = "22312;Info II;5;4;5";
+    matrix = new char* [5];
+    for(int i = 0; i<5; i++){
+        matrix[i] = new char[10];
+    }
+    split(cadena,matrix,';',5);
+    for(int j = 0;j<5;j++){
+        (*(*(cursos)+j)) = *(matrix +j);
+
+    }
+    for(int i = 0;i<4;i++){
+        for (int j = 0; j < 5; j++) {
+            cout << cursos[i][j];
+            cout << " ";
+        }
+        cout << endl;
+    }
 
 
+    //LIBERAR MEMORIA
+    for(int i = 0; i<4;i++){
+        for(int j = 0; j<5; j++){
+            delete[] cursos[i][j];
+        }
+        delete[] cursos[i];
+    }
+    delete[] cursos;
+
+    for(int i = 0; i<5;i++)delete[] matrix[i];
+    delete[] matrix;
+    */
     return 0;
 
+}
+void asignar_memoria(char***matrix,int saltos){
+    int n = saltos+1, m = 5;
+    int p = 20; // longitud  maxima de cada elemento
+
+    matrix = new char**[n];
+
+    for (int i = 0; i < n; i++) {
+      matrix[i] = new char*[m];
+        for (int j = 0; j < m; j++) {
+            matrix[i][j] = new char[p];
+        }
+    }
+}
+void liberar_memoria(char*** matrix, int saltos){
+    for(int i = 0; i<saltos+1;i++){
+        for(int j = 0; j<5; j++){
+            delete[] matrix[i][j];
+        }
+        delete[] matrix[i];
+    }
+    delete[] matrix;
 }
 int len_char (char *p){
     int longitud=0;
@@ -71,6 +152,43 @@ int len_char (char *p){
     }
     return longitud;
 }
+int saltoschar(char name_file[]){
+    ifstream fin;
+    //Pedir nombre del archivo o abrir con nombre existente
+    cout<<"Ingrese nombre del archivo (sin espacios) ";
+    cin>>name_file;//lee una cadena sin espacios
+    int saltos = 0;
+    try{
+
+        fin.open(name_file);        //abre el archivo para lectura
+        if(!fin.is_open()){
+            throw '2';
+        }
+
+        while(fin.good()){ //lee caracter a caracter hasta el fin del archivo
+            char temp=fin.get();
+            if(fin.good()){
+                if(temp == '\n'){
+                    saltos++;//contar saltos de linea (cantidad cursos)
+                }
+            }
+        }
+        fin.close();
+        return saltos;
+    }
+    catch (char c){
+        cout<<"Error # "<<c<<": ";
+        if(c=='2'){
+            cout<<"Error al abrir el archivo para escritura.\n";
+        }
+    }
+    catch (...){
+        cout<<"Error no definido\n";
+    }
+    return 1;
+
+
+}
 void split(char* cadena,char**subcadenas,char sep, int nf){
     //Cadena: Cadena char a "formatear"
     //Subcadenas: Matriz 2 dimensiones que contiene cada dato como arreglo char
@@ -78,7 +196,7 @@ void split(char* cadena,char**subcadenas,char sep, int nf){
     //nf: Cantidad de filas que tendrá la matriz.
     //Por ejemplo, al guardar codigo, nombre, HTI, HTD, nCRED => nf = 5
     int l = len_char(cadena);
-    int c = 0;
+    int c = -1;
     for(int i = 0; i<nf;i++){
         int j = 0;
         c++;
@@ -91,6 +209,7 @@ void split(char* cadena,char**subcadenas,char sep, int nf){
         subcadenas[i][j]= '\0';
     }
 
+
 }
 
 /*bool file_correct(char *name){
@@ -101,25 +220,13 @@ void split(char* cadena,char**subcadenas,char sep, int nf){
     }
     return true;
 } */
-void leer_cursos(char ***cursos)
+void leer_cursos(char ***cursos,char name_file[])
 {
     /*Guardar en una matriz la infromación de cursos
     */
 
     char cadena[40]; //Mejor asignar con memoria dinamica??
     ifstream fin;               //stream de entrada, lectura
-    ofstream fout;              //stream de salida, escritura
-    char name_file[64];
-    //Pedir nombre del archivo o abrir con nombre existente
-    cout<<"Ingrese nombre del archivo (sin espacios) ";
-    cin>>name_file;//lee una cadena sin espacios
-    /*while(!(file_correct(name_file))){
-        cout << "Ingresa el nombre del archivo correctamente";
-        cin >> name_file;
-    }*/
-
-    //cin.getline(cadena1, sizeof(cadena1));      //lee una cadena con espacios
-
     try{
 
         fin.open(name_file);        //abre el archivo para lectura
@@ -135,29 +242,25 @@ void leer_cursos(char ***cursos)
                     saltos++;//contar saltos de linea (cantidad cursos)
                 }
             }
-
         }
-
         //ASIGNAR MEMORIA DINAMICA PARA GUARDAR CURSOS-----------------
 
-        int n = saltos, m = 5;
+        int n = saltos+1, m = 5;
         int p = 20; // longitud  maxima de cada elemento
 
-        // Asignar memoria dinámica al puntero triple
-        cursos = new char**[n];
+        //cursos = new char**[n];
 
-        // Asignar memoria dinámica a los punteros dobles
         for (int i = 0; i < n; i++) {
           cursos[i] = new char*[m];
-          // Asignar memoria dinámica a los punteros simples
             for (int j = 0; j < m; j++) {
                 cursos[i][j] = new char[p];
             }
         }
+        //asignar_memoria(cursos,saltos);
         // FINALIZACIÓN DE ASIGNACIÓN--------------------------------
 
-        char **lista_individual = nullptr;
-        lista_individual = new char* [5];
+        char **lista_individual = new char* [5];
+
         for(int i = 0; i<5; i++){
             lista_individual[i] = new char[20];
         }
@@ -168,54 +271,61 @@ void leer_cursos(char ***cursos)
         if(!fin.is_open()){
             throw '2';
         }
+
         cout << "Saltos: " << saltos << endl;
         //LECTURA OFICIAL
+
+
         for(int i = 0; i<(saltos+1);i++){
             fin.getline(cadena,40);
+
+            char aux[5][20] ={{}};
+
+            char **lista_individual = new char*[5];
+            for(int i = 0; i<5; i++){
+                lista_individual[i] = new char[20];
+            }
+
             split(cadena,lista_individual,';',5);
-            for(int j = 0;j<5;j++){
-                cout << lista_individual[j];
+            //split(cadena,cursos[i],';',5);
 
-                cout << endl;
+            cout << "Lista Individual";
+            for (int j = 0; j < 5; j++) {
+                for(int k = 0;k<20;k++){
+                    aux[j][k] = *(*(lista_individual+j)+k);
+                    *(*(*(cursos+i)+j)+k) = *(*(lista_individual+j)+k);
+                    //iterador i (representa la fila)está al inicio
+                }
             }
-            for(int j = 0;j<5;j++){
-                cursos[i][j] = lista_individual[j];
 
-            }
+            cout << endl;
+            for(int i = 0; i<5;i++)delete[] lista_individual[i];
+            delete[] lista_individual;
             //convertir/formatear cadena a matriz(lista de arreglos char)
             //añadir matriz anterior a matriz 3D
-        }
 
-        for (int j = 0; j < 5; j++) {
-            cout << cursos[0][j];
+        }
+        for(int i = 0; i<saltos+1;i++){
+            for (int j = 0; j < 5; j++) {
+                cout << cursos[i][j];
+            }
             cout << endl;
         }
 
-
-    /*
-        int i=0;
-        while(fin.good()){  //lee caracter a caracter hasta el fin del archivo
-            char temp=fin.get();
-            if(fin.good()){
-                cadena2[i]=temp;//Asigna cada caracter leido a la cadena de caracteres
-            }
-            i++;
-        }*/
         fin.close();   //Cierra el archivo de lectura.
 
         // Liberar la memoria asignada---------------------
         // Si se libera acá no se puede utilizar la matriz
         // Mejor liberar matriz afuera, pasandole por los valores de sus dimensiones
-        for (int i = 0; i < n; i++) {
+        /*for (int i = 0; i < n; i++) {
            for (int j = 0; j < m; j++) {
-              delete [] cursos[i][j];
+              delete[] cursos[i][j];
            }
            delete[] cursos[i];
         }
-        delete[] cursos;
+        delete[] cursos;*/
         // Liberar la memoria asignada---------------------
-        for(int i = 0; i<5;i++)delete[] lista_individual[i];
-        delete[] lista_individual;
+
 
 
 
@@ -230,3 +340,4 @@ void leer_cursos(char ***cursos)
         cout<<"Error no definido\n";
     }
 }
+
