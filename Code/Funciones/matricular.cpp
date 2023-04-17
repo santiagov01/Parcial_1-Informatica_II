@@ -43,6 +43,7 @@ void matricular_cursos(char ***Base_datos, char*** Matriculadas, unsigned short 
                 //vuelve a verificar
                 for(int m = 0; m<len_char(code_mat);m++){
                     Matriculadas[i][0][m]=code_mat[m];//copia contenido
+                    i++;
                 }
             }
         }
