@@ -6,3 +6,10 @@ int char_int(char *p){
     }
     return num;
 }
+int dec_10(int a){
+    int dec=1;
+    for(int i=1;i<a;i++){
+        dec*=10;
+    }
+    return dec;
+}
