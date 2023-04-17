@@ -34,7 +34,7 @@ void split(char* cadena,char**subcadenas,char sep, int nf){
     //nf: Cantidad de filas que tendrá la matriz.
     //Por ejemplo, al guardar codigo, nombre, HTI, HTD, nCRED => nf = 5
     int l = len_char(cadena);
-    int c = 0;
+    int c = -1;
     for(int i = 0; i<nf;i++){
         int j = 0;
         c++;
