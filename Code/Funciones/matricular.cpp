@@ -1,9 +1,17 @@
+void mostrar_informacion(char*** Base_datos,int total){
+    for(int i = 0;i<total;i++){
+        cout << i+1 << ". "<<Base_datos[i][1] << "  "  << Base_datos[i][0];
+        cout << endl;
+    }
+}
 bool validar_materia(char*** Base_datos, char* codigo,int total, int *index){
     /*
      * Codigo ingresado a comparar
      * index Sera la posicion en la que se encuentra actualmente
+     * Esta funcion es util para validar si una cadena ya se encuentra
+     * en la base de datos, en este caso el codigo
     */
-    *index = 0;
+    *index = -1;
     for(int i = 0; i<total; i++){
         (*index)++;//retorna en indice por referencia
         if(compare(Base_datos[i][0],codigo))return true;//el codigo coincide
@@ -21,10 +29,10 @@ void matricular_cursos(char ***Base_datos, char*** Matriculadas, unsigned short 
 
 
     [X] Validar que la suma de creditos del estudiante no exceda de 32
-    [ ] Validar que Curso ingresado no se repita
+    [X] Validar que Curso ingresado no se repita
 
-    Hacer una version que dependa solo de creditos
-    Hacer una version que dependa de las cantidad y de creditos
+    [X]Hacer una version que dependa solo de creditos
+    [ ]Hacer una version que dependa de las cantidad y de creditos
 
      * */
     //cout << "Ingresa cantidad de Cursos a Matricular";
@@ -36,11 +44,11 @@ void matricular_cursos(char ***Base_datos, char*** Matriculadas, unsigned short 
     //se usa para poder acceder al numero de creditos
     int i = 0;//posicion en Matriculadas
     int aux= 0;
-
-    while(cred<=32){//si es con cantidad se hace un bucle for
-        // [ ] Pendiente agregar una función que deje ver los cursos que existen
+    short int opc = 0;
+    while(opc!=-1){//si es con cantidad se hace un bucle for
+     
         mostrar_informacion(Base_datos,total);
-        cout << "Ingresa el codigo de la materia";
+        cout << "\nIngresa el codigo de la materia: \n";
         cin >> code_mat;
         if((validar_materia(Base_datos,code_mat,total,&index))){
             //validar que Codigo ingresado existe en la base de datos.
@@ -51,13 +59,24 @@ void matricular_cursos(char ***Base_datos, char*** Matriculadas, unsigned short 
                     //vuelve a verificar
                     for(int m = 0; m<len_char(code_mat);m++){
                         Matriculadas[i][0][m]=code_mat[m];//copia contenido en Matriculados
-                        i++;
                     }
-                    cantidad++;
+                    i++;
+                    (*cantidad)++;
+                }else{
+                    cout << "\nEstas loco. No puedes matricular mas de 32 creditos!!!";
+                    cout << "Ingresa una nueva materia con menos creditos";
                 }
 
-            }else cout << "\nError al matricular. La materia " << Base_datos[index][1] << " ya se encuentra matriculada" <<endl;
-        }else cout << "\nError. No se encontró ninguna materia con el codigo ingresado. \nVerifque de nuevo"<<endl;
 
+            }else cout << "\nError al matricular. La materia " << Base_datos[index][1] << " ya se encuentra matriculada" <<endl;
+        }else cout << "\nError. No se encontro ninguna materia con el codigo ingresado. \nVerifque de nuevo"<<endl;
+        if(cred>=8&&cred<=32){
+            cout << "\nDeseas matricular una nueva materia?" << endl;
+            cout << "Presiona 1 para continuar" << endl;
+            cout << "Presiona -1 para salir\n" << endl;
+            cin >> opc;
+        }else{
+            cout << "\nAun no has completado el minimo de codigos para matricular";
+        }
     }
 }
