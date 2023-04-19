@@ -1,63 +1,63 @@
-﻿2536101;Descubriendo la fisica;4;5;3
-2555131;Calculo diferencial;4;5;3
-2555101;Algebra y trigonometria;4;5;3
-2555121;Geometria Vectorial y analitica;4;5;3
-2598511;Informatica I;7;5;4
-2538101;Ingles I;4;0;1
-2537101;Vivamos la universidad;2;1;1
-2536201;Fisica Mecanica;4;5;3
-2555231;Calculo integral;4;5;3
+2598573;Acondicion de señales;7;5;4
 2555221;Algebra linea;4;5;3
-2599421;Introduccion a la ing Telecom;2;1;1
-2598521;Informatica II;7;5;4
-2538201;Ingles III;4;0;1
-2539101;Lectoescritura;4;5;3
-2536302;Fisica de Ondas;4;5;3
+2555101;Algebra y trigonometria;4;5;3
+2555131;Calculo diferencial;4;5;3
+2555231;Calculo integral;4;5;3
 2555331;Calculo Vectorial;4;5;3
-2598531;Ecuaciones diferenciales;4;5;3
 2598532;Circuitos electricos I;7;5;4
-2599431;Probabilidad y estadistica;4;5;3
-2538301;Ingles III;4;0;1
-2517362;Form Ciud y constitucional;2;1;1
-2536311;Fisica de Campos;4;5;3
-2598541;Matematicas Especiales;4;5;3
-2598544;Metodos Numericos;4;5;3
 2598542;Circuitos electricos II;7;5;4
-2599441;Referenciacion geografica;3;0;1
-2538401;Ingles IV;4;0;1
-2536502;Lab Integrado  De fisicia;6;0;2
+2599492;Comunicaciones Inalambricas;4;5;3
+2536101;Descubriendo la fisica;4;5;3
+2598531;Ecuaciones diferenciales;4;5;3
 2598554;Electromagnetismo;4;5;3
+2598552;Electronica analogica I;7;5;4
+2598561;Electronica analogica II;7;5;4
+2598581;Electronica de potencia;7;5;4
+2598553;Electronica digital I;7;5;4
+2598562;Electronica digital II;7;5;4
+2598571;Electronica digital III;7;5;4
+2536311;Fisica de Campos;4;5;3
+2536302;Fisica de Ondas;4;5;3
 2598551;Fisica del estado solido;4;5;3
+2536201;Fisica Mecanica;4;5;3
+2517362;Form Ciud y constitucional;2;1;1
 2599451;Fundament de Electr Analoga;7;5;4
 2599452;Fundament de Electr Digital;7;5;4
+2555121;Geometria Vectorial y analitica;4;5;3
+2599482;Gestion de Telecomunic I;4;5;3
+2598511;Informatica I;7;5;4
+2598521;Informatica II;7;5;4
+2538101;Ingles I;4;0;1
+2538201;Ingles III;4;0;1
+2538301;Ingles III;4;0;1
+2538401;Ingles IV;4;0;1
 2538501;Ingles V;4;0;1
-2599464;Materiales en ingenieria;7;5;4
-2599461;Tratamiento de señales I;7;5;4
-2599465;Teoria de la informacion;4;5;3
-2599463;Teoria de teletrafico;4;5;3
-2599462;Redes de computad  I;4;5;3
 2538601;Ingles VI;4;0;1
+2598522;Introduccion a la ing Electro;2;1;1
+2599421;Introduccion a la ing Telecom;2;1;1
+2536502;Lab Integrado  De fisicia;6;0;2
+2539101;Lectoescritura;4;5;3
+2598574;Maquinas electricas;7;5;4
+2598543;Matematicas Discretas;4;5;3
+2598541;Matematicas Especiales;4;5;3
+2599464;Materiales en ingenieria;7;5;4
+2598544;Metodos Numericos;4;5;3
+2599493;Polit y Regula en Teleco;4;2;2
+2599431;Probabilidad y estadistica;4;5;3
 2599475;Proces Digital de señales;7;5;4
-2599471;Tratamiento de señales II;7;5;4
-2599473;Trans por Med confinados;4;5;3
-2599474;Tecnicas de optimizacion;4;5;3
-2599472;Redes de computad II;6;3;3
-2599481;Tratamiendo de señales III;7;5;4
 2599484;Proyecto integrador;3;0;1
 2599483;Radiotransmision;6;6;4
-2599482;Gestion de Telecomunic I;4;5;3
-2599493;Polit y Regula en Teleco;4;2;2
-2599492;Comunicaciones Inalambricas;4;5;3
-2599401;Seminario Ing telecominicaciones;2;7;3
-2598522;Introduccion a la ing Electro;2;1;1
-2598543;Matematicas Discretas;4;5;3
-2598552;Electronica analogica I;7;5;4
-2598553;Electronica digital I;7;5;4
-2598563;Sist Control continuo;7;5;4
-2598561;Electronica analogica II;7;5;4
-2598562;Electronica digital II;7;5;4
-2598574;Maquinas electricas;7;5;4
-2598573;Acondion de señales;7;5;4
-2598571;Electronica digital III;7;5;4
-2598581;Electronica de potencia;7;5;4
+2599462;Redes de computad  I;4;5;3
+2599472;Redes de computad II;6;3;3
+2599441;Referenciacion geografica;3;0;1
 2598591;Seminario ing Electronica;2;1;1
+2599401;Seminario Ing telecominicaciones;2;7;3
+2598563;Sist Control continuo;7;5;4
+2599474;Tecnicas de optimizacion;4;5;3
+2599465;Teoria de la informacion;4;5;3
+2599463;Teoria de teletrafico;4;5;3
+2599473;Trans por Med confinados;4;5;3
+2599481;Tratamiendo de señales III;7;5;4
+2599461;Tratamiento de señales I;7;5;4
+2599471;Tratamiento de señales II;7;5;4
+2537101;Vivamos la universidad;2;1;1
