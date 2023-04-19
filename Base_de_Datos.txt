@@ -1,4 +1,4 @@
-2598573;Acondicion de señales;7;5;4
+2598573;Acondicion de senales;7;5;4
 2555221;Algebra linea;4;5;3
 2555101;Algebra y trigonometria;4;5;3
 2555131;Calculo diferencial;4;5;3
@@ -44,7 +44,7 @@
 2598544;Metodos Numericos;4;5;3
 2599493;Polit y Regula en Teleco;4;2;2
 2599431;Probabilidad y estadistica;4;5;3
-2599475;Proces Digital de señales;7;5;4
+2599475;Proces Digital de senales;7;5;4
 2599484;Proyecto integrador;3;0;1
 2599483;Radiotransmision;6;6;4
 2599462;Redes de computad  I;4;5;3
@@ -57,7 +57,7 @@
 2599465;Teoria de la informacion;4;5;3
 2599463;Teoria de teletrafico;4;5;3
 2599473;Trans por Med confinados;4;5;3
-2599481;Tratamiendo de señales III;7;5;4
-2599461;Tratamiento de señales I;7;5;4
-2599471;Tratamiento de señales II;7;5;4
+2599481;Tratamiendo de senales III;7;5;4
+2599461;Tratamiento de senales I;7;5;4
+2599471;Tratamiento de senales II;7;5;4
 2537101;Vivamos la universidad;2;1;1
