@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 using namespace std;
+
 void menu(char***Datos,char***Matriculadas,char***calendario,int jornada[],int saltos){
     unsigned short int num_clases = 0,opcion;
 
@@ -55,7 +56,7 @@ void menu(char***Datos,char***Matriculadas,char***calendario,int jornada[],int s
         case 4:{
             if(horario_ingresado){
                 if(!asignar_indep){
-                    cout << "Asignación de materias en proceso...";
+                    cout << "Asignacion de materias en proceso...";
                     rellenar(Datos,calendario,Matriculadas,num_clases, jornada);
                     asignar_indep = true;
                 }cout << "Ya se han asignado las horas de estudio independiente" << endl;
@@ -81,27 +82,7 @@ void rellenar(char ***datos, char ***calendario, char ***Matriculados, int num_c
     unsigned short int HTI,tam_jornada;
     int index;
     tam_jornada=jornada[3]-jornada[0];
-    char dsp[33] = "           Disponible           ";
-    for(int i=0;i<num_clases;i++){
-    validar_materia(datos,Matriculados[i][0],63,&index);
-         HTI=char_int(datos[i][3]);
-         srand(time(NULL));
-         while(HTI>0){
-
-             int dia= rand() % 6;
-             int hora=rand() %tam_jornada;
-             if(compare(calendario[hora][dia],dsp)){
-                 reservarIndep(calendario,dia,hora,datos,index);
-                 HTI--;
-             }
-        }
-    }
-}
-void rellenar_horas_comida(char ***datos, char ***calendario, char ***Matriculados, int num_clases, int *jornada){
-    unsigned short int HTI,tam_jornada;
-    int index;
-    tam_jornada=jornada[3]-jornada[0];
-    char dsp[33] = "           Disponible           ";
+    char dsp[27] = "        Disponible        ";
     for(int i=0;i<num_clases;i++){
     validar_materia(datos,Matriculados[i][0],63,&index);
          HTI=char_int(datos[i][3]);
@@ -118,498 +99,6 @@ void rellenar_horas_comida(char ***datos, char ***calendario, char ***Matriculad
     }
 }
 
-void horario_clases2(char ***Matriculados, char ***datos, char ***calendario, int num_clases
-                     , int *jornada, int saltos){
-    //Ingresar hora por hora
-    unsigned short int dia = 0,HTD;
-    short int indice_hora = 0;
-    int hora = 0;
-    int index=0;
-    char dia_letra = '\0';
-    for(int i = 0;i<num_clases;i++){
-        validar_materia(datos,Matriculados[i][0],saltos,&index);
-        HTD=char_int(datos[index][2]);
-        while(HTD>0){
-
-            validar_dia(datos,&index,dia_letra,&dia);
-            validar_hora(datos,jornada,&indice_hora,index,hora);
-
-            char dsp[33] = "           Disponible           ";
-            if(compare(calendario[indice_hora][dia],dsp)){
-                reservarHora2(calendario,dia,indice_hora,datos,index);
-                //Matriculados[i][0]=
-                HTD--;
-                cout << "HORA MATRICULADA CON EXITO"<<endl;
-            }else{
-                cout << "ESTA HORA NO ESTÁ DISPONIBLE. Prueba con otra."<<endl;
-            }
-            mostrarCalendario(jornada,calendario);
-        }
-    }
-}
-void validar_tipo_hora(int *hora){
-    while(!(scanf("%d",hora))){
-        cout << "Debes ingresar un NUMERO" << endl;
-        cout << "Introduzca la HORA(6,7,8...) de " << endl;
-        cin >> *hora;
-
-    }
-}
-void validar_hora(char*** datos, int * jornada, short int *indice_hora, int index,int hora){
-    cout << "Introduzca la HORA(6,7,8...) de " << datos[index][1] << endl;
-    cin >> hora;
-    (*indice_hora) = hora - jornada[0];
-    while(!((*indice_hora)>=0&&((*indice_hora)<=jornada[3]-jornada[0]))){
-
-        cout << "\nINGRESA CORRECTAMENTE LA HORA!!!" << endl;
-        cout << "Introduzca la HORA(6,7,8...) de " << datos[index][1] << endl;
-        cin >> hora;        
-        (*indice_hora) = hora - jornada[0];
-    }
-}
-void validar_dia(char*** datos, int *index,char dia_letra, unsigned short int *dia){
-    cout << "Introduzca el DIA (L,M,W...) de " << datos[(*index)][1] << endl;
-    cin >> dia_letra;
-    (*dia)=indice_dia2(dia_letra);
-    while((*dia)==10){
-        cout << "\nINGRESA CORRECTAMENTE EL DIA !!!\n";
-        cout << "Introduzca inicial el DIA [L,M,W,J,V,S] de " << datos[(*index)][1] << endl;
-        cin >> dia_letra;
-        (*dia)=indice_dia2(dia_letra);
-    }
-
-
-}
-
-void reservarHora2(char ***calendario, int dia, int hora,char ***datos,int index ){
-    int l_final = 33;
-    char *copia= new char[l_final];
-
-    beauty(datos[index][1],copia,l_final);
-    for(int k = 0; k<len_char(calendario[hora][dia]);k++)
-        calendario[hora][dia][k]= copia[k];
-
-    delete[] copia;
-
-}
-
-void reservarIndep(char ***calendario, int dia, int hora,char ***datos,int index ){
-    int l_final = 33;
-    char *copia= new char[l_final+1];
-
-    formato_indpendientes(datos[index][1],copia,l_final);
-    for(int k = 0; k<len_char(calendario[hora][dia]);k++)
-        calendario[hora][dia][k]= copia[k];
-
-    delete[] copia;
-
-}
-
-int indice_dia2(char matriculados){
-    short int dia=10;
-    if(matriculados==76 || matriculados==118) dia=0;
-    if(matriculados==77 || matriculados==109) dia=1;
-    if(matriculados==87 || matriculados==119) dia=2;
-    if(matriculados==74 || matriculados==106) dia=3;
-    if(matriculados==86 || matriculados==118) dia=4;
-    if(matriculados==83 || matriculados==115) dia=5;
-    return dia;
-
-}
-
-int indice_dia(char *matriculados){
-    short int dia=0;
-    if(*matriculados==76 || *matriculados==118) dia=0;
-    if(*matriculados==77 || *matriculados==109) dia=1;
-    if(*matriculados==87 || *matriculados==119) dia=2;
-    if(*matriculados==74 || *matriculados==106) dia=3;
-    if(*matriculados==86 || *matriculados==118) dia=4;
-    if(*matriculados==83 || *matriculados==115) dia=5;
-    return dia;
-
-}
-
-void matricular_cursos(char ***Base_datos, char*** Matriculadas, unsigned short int *cantidad,int total){
-    /*
-    Base_datos: matriz que contiene toda la informacion
-    Matriculadas: Matriz a llenar con las materias del usuario
-    ***¿que cantidad de memoria almacenar? Es decir, ¿qué cantidad de materias reservar?
-    R/ Asignar por defecto 10
-
-    (?)cantidad: Numero de materias que el estudiante va a matricular
-    total: Total de materias en Base de datos
-    [-] Validar que cantidad sea positiva y menor que el maximo de materias
-
-
-    [X] Validar que la suma de creditos del estudiante no exceda de 32
-    [X] Validar que Curso ingresado no se repita
-
-     */
-    //cout << "Ingresa cantidad de Cursos a Matricular";
-    //cin >> *cantidad;
-
-    int cred = 0;
-    int num;
-
-    //se usa para poder acceder al numero de creditos
-    int i = 0;//posicion en Matriculadas
-    int aux= 0;
-    short int opc = 0;
-    while(opc!=-1){//si es con cantidad se hace un bucle for
-        // [ ] Pendiente agregar una función que deje ver los cursos que existen
-        cout << "\nSelecciona numero de la siguiente lista de materias\n";
-        mostrar_informacion(Base_datos,total);
-
-        cin >> num;//seleccionar materia de acuerdo a la lista mostrada
-        if(num > 0 && num<=total){//valida indice
-            // Validar si codigo de la materia ya esta matriculado
-            if((!validar_materia(Matriculadas,Base_datos[num-1][0],i,&aux))){
-
-                cred+=char_int(Base_datos[num-1][4]); //aumenta el numero de creditos actuales
-                if(cred <=32){//verificar cantidad de creditos
-
-                    int l = len_char(Base_datos[num-1][0]);
-                    for(int m = 0; m<l;m++){
-                        Matriculadas[i][0][m]=Base_datos[num-1][0][m];//copia contenido en Matriculados
-                    }
-                    Matriculadas[i][0][l] = '\0';
-                    i++;
-                    (*cantidad)++;
-                    cout << "\n La materia " << Base_datos[num-1][1] << " se ha matriculado con EXITO " << endl;
-                }else{
-                    cout << "\nEstas loco. No puedes matricular mas de 32 creditos!!!";
-                    cout << "Ingresa una nueva materia con menos creditos";
-                }
-
-
-            }else cout << "\nERROR al matricular. La materia " << Base_datos[num-1][1] << " ya se encuentra matriculada" <<endl;
-
-        }else cout << "\nIndice de lista incorrecto. Digita bien tu opcion";
-
-        //Pregunta de confirmacion de acuerdo al numero de creditos que lleva
-        if(cred>=8&&cred<=32){
-            cout << "\nDeseas matricular una nueva materia?" << endl;
-            cout << "Presiona 1 para continuar" << endl;
-            cout << "Presiona -1 para salir\n" << endl;
-            cin >> opc;
-        }else{
-            cout << "\nAun no has completado el minimo de creditos para matricular\n";
-        }
-    }
-}
-
-bool validar_materia(char*** Matriculadas, char* codigo,int total, int *index){
-    /*
-     * Codigo ingresado a comparar
-     * index Sera la posicion en la que se encuentra actualmente
-     * Esta funcion es util para validar si una cadena ya se encuentra
-     * en la base de datos, en este caso el codigo
-    */
-    *index = -1;
-    for(int i = 0; i<total; i++){
-        (*index)++;//retorna en indice por referencia
-        if(compare(Matriculadas[i][0],codigo))return true;//el codigo coincide
-    }
-    return false;
-}
-
-int saltoschar(char name_file[]){
-    ifstream fin;
-    int saltos = 0;
-    try{
-
-        fin.open(name_file);        //abre el archivo para lectura
-        if(!fin.is_open()){
-            throw '2';
-        }
-
-        while(fin.good()){ //lee caracter a caracter hasta el fin del archivo
-            char temp=fin.get();
-            if(fin.good()){
-                if(temp == '\n'){
-                    saltos++;//contar saltos de linea (cantidad cursos)
-                }
-            }
-        }
-        fin.close();
-        return saltos;
-    }
-    catch (char c){
-        cout<<"Error # "<<c<<": ";
-        if(c=='2'){
-            cout<<"Error al abrir el archivo para escritura.\n";
-        }
-    }
-    catch (...){
-        cout<<"Error no definido\n";
-    }
-    return 1;
-
-
-}
-
-void leer_cursos(char ***cursos,char name_file[])
-{
-    /*Guardar en una matriz la infromación de cursos
-    */
-
-    char cadena[64]="\0"; //Mejor asignar con memoria dinamica??
-    ifstream fin;               //stream de entrada, lectura
-    try{
-
-        fin.open(name_file);        //abre el archivo para lectura
-        if(!fin.is_open()){
-            throw '2';
-        }
-        int saltos = saltoschar(name_file);
-        //ASIGNAR MEMORIA DINAMICA PARA GUARDAR CURSOS-----------------
-
-        int n = saltos+1, m = 5;//dimensiones
-        int p = 33; // longitud  maxima de cada elemento
-        for (int i = 0; i < n; i++) {
-          cursos[i] = new char*[m];
-            for (int j = 0; j < m; j++) {
-                cursos[i][j] = new char[p];
-            }
-        }
-        fin.close();
-        fin.open(name_file);
-        if(!fin.is_open()){
-            throw '2';
-        }
-        for(int i = 0; i<(saltos+1);i++){
-            //recorre linea a linea
-            fin.getline(cadena,64);
-
-            char **lista_individual = new char*[5];
-            for(int i = 0; i<5; i++){
-                lista_individual[i] = new char[33];
-            }
-            lista_individual[0][0]='\000';
-            //separa cadena leida y guardar en lista
-            //convertir/formatear cadena a matriz(lista de arreglos char)
-            split(cadena,lista_individual,';',5);
-            for (int j = 0; j < 5; j++) {
-                for(int k = 0;k<33;k++){
-                    //añadir matriz anterior a matriz 3D
-                    *(*(*(cursos+i)+j)+k) = *(*(lista_individual+j)+k);
-                    //iterador i (representa la fila)está al inicio
-                }
-                *(*(*(cursos+i)+j)+33)='\0';
-            }
-            for(int i = 0; i<5;i++)delete[] lista_individual[i];
-            delete[] lista_individual;
-        }
-
-
-        fin.close();
-    }
-    catch (char c){
-        cout<<"Error # "<<c<<": ";
-        if(c=='2'){
-            cout<<"Error al abrir el archivo para escritura.\n";
-        }
-    }
-    catch (...){
-        cout<<"Error no definido\n";
-    }
-}
-
-void mostrarCalendario(int *jornada, char***calendario) {
-    cout << "     ";
-    char dias[6]={'L','M','W','J','V','S'};
-    for (int j = 0; j < 6; j++) cout <<"               "<< dias[j]<<"                ";
-    cout << endl;
-    if(jornada[0]>jornada[3]){
-        for (int i = 0; i < 24-jornada[0]+jornada[3]; i++) {
-            if(jornada[0]+i>23){
-                if(jornada[0]+i>9) cout<<jornada[0]+i-24<<":"<<jornada[1]<<jornada[2]<<" ";
-                else cout <<jornada[0]+i-24<<":"<<jornada[1]<<jornada[2];
-
-                for (int j = 0; j < 6; j++) cout << calendario[i][j]; //aqui debe de ir la funcion que imprima el nombre
-                cout << endl;
-            }
-
-            else{
-                if(jornada[0]+i>9) cout<<jornada[0]+i<<":"<<jornada[1]<<jornada[2];
-                else cout <<jornada[0]+i<<":"<<jornada[1]<<jornada[2]<<" ";
-
-                for (int j = 0; j < 6; j++) cout << calendario[i][j]; //aqui debe de ir la funcion que imprima el nombre
-                cout << endl;
-            }
-        }
-
-    }
-
-    else{
-        for (int i = 0; i < jornada[3]-jornada[0]; i++) {
-            if(jornada[0]+i>9) cout<<jornada[0]+i<<":"<<jornada[1]<<jornada[2];
-            else cout <<jornada[0]+i<<":"<<jornada[1]<<jornada[2]<<" ";
-
-            for (int j = 0; j < 6; j++) cout << calendario[i][j]; //aqui debe de ir la funcion que imprima el nombre
-            cout << endl;
-            }
-
-    }
-}
-
-int crearJornada(int *jornada){
-    cout << "****************************************************" << endl;
-    cout<<"BIENVENIDO AL SISTEMA DE GESTION DE HORARIO"<<endl<<endl;
-    cout << "****************************************************" << endl;
-    cout<<"Para comenzar creemos su jornada de estudio"<<endl;
-
-        unsigned short int horai,horaf,horas_jornada;
-        bool valido;
-        do{
-        cout<<"introduzca la hora inicial de su jornada en formato 2400"<<endl;
-        cin>>horai;
-        cout<<"introduzca la hora final de su jornada en formato 2400"<<endl;
-        cin>>horaf;
-
-        if (horai>2400){
-            valido=false;
-            cout<<"Hora invalida"<<endl;
-        }
-        else valido=true;
-        }while(!valido);
-
-            jornada[0]=horai/100;//Hora
-            jornada[1]=horai%100;
-            jornada[2]=horai%10;
-            jornada[3]=horaf/100;//Hora
-            jornada[1]=horaf%100;
-            jornada[2]=horaf%10;
-
-        if(jornada[0]>jornada[3]) horas_jornada=24-jornada[0]+jornada[3];
-        else horas_jornada=jornada[3]-jornada[0];
-        return horas_jornada;
-        }
-
-void mostrar_informacion(char*** Base_datos,int total){
-    //Muestra los nombres de la materia en una lista
-    int ajuste;
-    for(int i = 0;i<total;i++){
-        ajuste=0;
-        cout << i+1 << ". "<<Base_datos[i][1] << "  "  << Base_datos[i][4]<<" Cred";
-        while(len_char(Base_datos[i][1])+len_char(Base_datos[i][0])+ajuste<40){
-              cout<<" ";
-              ajuste++;
-        }
-    }
-}
-//-----
-int indice_hora(char ***matriculados,int *jornada,int clase, int hora){
-    short int horaClase=0,horaI;
-    horaI=-1;
-    horaClase=char_int(matriculados[clase][3+hora]);
-    for(int j=0;j<jornada[3]-jornada[0];j++){//recorre todas las horas de la jornada
-        if(horaClase==jornada[0]+j){
-            horaI++;
-            break;
-        }
-        else horaI++;
-
-    }
-
-    return horaI;
-}
-void RestarHora(char *Matricula){
-    short int Hora_original;
-    char Nueva_hora[2]={};
-    Hora_original=char_int(Matricula);
-    int_char(Hora_original-1,len_num(Hora_original),Nueva_hora);
-    for(int i=0;i<len_num(Hora_original);i++){
-        Matricula[i]=Nueva_hora[i];
-    }
-
-}
-bool verificarDisponibilidad2(char ***calendario ,char ***matriculados,int *jornada, int indice) {
-    unsigned short int rango,dia,horaD=0,horaI;
-
-    for(int i=0;i<2;i++){
-        dia=indice_dia(matriculados[indice][i+1]);
-
-    rango=char_int(matriculados[indice][4])-char_int(matriculados[indice][3]);
-
-    for(int i=0;i<rango;i++){
-        horaI=indice_hora(matriculados,jornada,indice,i);
-        char dsp[33] = "           Disponible           ";
-        if(compare(calendario[horaI][dia],dsp)){
-            horaD++;
-
-        }
-        else return false;
-    }
-    }
-        if(horaD==2*(char_int(matriculados[indice][4])-char_int(matriculados[indice][3]))) return true;
-        else return false;
-}
-bool verificarDisponibilidad(char ***calendario ,char ***matriculados,int *jornada, int indice) {
-    unsigned short int rango,dia,horaD=0,horaI;
-
-    for(int i=0;i<2;i++){
-        dia=indice_dia(matriculados[indice][i+1]);
-
-    rango=char_int(matriculados[indice][4])-char_int(matriculados[indice][3]);
-
-    for(int i=0;i<rango;i++){
-        horaI=indice_hora(matriculados,jornada,indice,i);
-        char dsp[33] = "           Disponible           ";
-        if(compare(calendario[horaI][dia],dsp)){
-            horaD++;
-
-        }
-        else return false;
-    }
-    }
-        if(horaD==2*(char_int(matriculados[indice][4])-char_int(matriculados[indice][3]))) return true;
-        else return false;
-}
-void reservarHora(char ***calendario, char ***matriculados, int dia, int hora,char ***datos,int materia ){
-    int l_final = 33;
-    char *copia= new char[l_final];
-    for(int i=0;i<63;i++){
-        if(compare(*matriculados[materia],*datos[i])){
-            beauty(datos[materia][1],copia,l_final);
-            for(int k = 0; k<len_char(calendario[hora][dia]);k++){
-                calendario[hora][dia][k]= copia[k];
-            }
-            break;
-        }
-    }
-    delete[] copia;
-
-}
-void horas_independientes2(char ***Matriculados, char ***datos, char ***calendario, int num_clases
-                     , int *jornada){
-    //Ingresar hora por hora
-    unsigned short int hora,indice_hora,dia,HTI;
-    char dia_letra;
-    for(int i = 0;i<num_clases;i++){
-        HTI=char_int(datos[i][3]);
-        while(HTI>0){
-            cout << "Introduzca el DIA (L,M,W...) de " << datos[i][1] << endl;
-            //FALTA HACER VALIDACION
-            cin >> dia_letra;
-            dia=indice_dia2(dia_letra);
-
-            cout << "Introduzca la HORA(6,7,8...) de " << datos[i][1] << endl;
-            //FALTA HACER VALIDACION
-            cin >> hora;
-            indice_hora = hora - jornada[0];
-            char dsp[33] = "           Disponible           ";
-            if(compare(calendario[indice_hora][dia],dsp)){
-                reservarHora(calendario,Matriculados,dia,indice_hora,datos,i);
-                HTI--;
-                cout << "HORA MATRICULADA CON EXITO";
-            }else{
-                cout << "ESTA HORA NO ESTÁ DISPONIBLE. Prueba con otra.";
-            }
-            mostrarCalendario(jornada,calendario);
-        }
-    }
-}
 void horario_clases(char ***Matriculados, char ***datos, char ***calendario, int num_clases
     , int *jornada){
       unsigned short int hora,dia;
@@ -702,7 +191,491 @@ void horario_clases(char ***Matriculados, char ***datos, char ***calendario, int
 
 
 }
-//-----
+
+
+void horario_clases2(char ***Matriculados, char ***datos, char ***calendario, int num_clases
+                     , int *jornada, int saltos){
+    //Ingresar hora por hora
+    unsigned short int dia = 0,HTD;
+    short int indice_hora = 0;
+    int hora = 0;
+    int index=0;
+    char dia_letra = '\0';
+    for(int i = 0;i<num_clases;i++){
+        validar_materia(datos,Matriculados[i][0],saltos,&index);
+        HTD=char_int(datos[index][2]);
+        while(HTD>0){
+
+            validar_dia(datos,&index,dia_letra,&dia);
+            validar_hora(datos,jornada,&indice_hora,index,hora);
+
+            char dsp[27] ="        Disponible        ";
+            if(compare(calendario[indice_hora][dia],dsp)){
+                reservarHora2(calendario,dia,indice_hora,datos,index);
+                //Matriculados[i][0]=
+                HTD--;
+                cout << "HORA MATRICULADA CON EXITO"<<endl;
+            }else{
+                cout << "ESTA HORA NO ESTÁ DISPONIBLE. Prueba con otra."<<endl;
+            }
+            mostrarCalendario(jornada,calendario);
+        }
+    }
+}
+void validar_hora(char*** datos, int * jornada, short int *indice_hora, int index,int hora){
+    cout << "Introduzca la HORA(6,7,8...) de " << datos[index][1] << endl;
+    cin >> hora;
+    (*indice_hora) = hora - jornada[0];
+    while(!((*indice_hora)>=0&&((*indice_hora)<=jornada[3]-jornada[0]))){
+
+        cout << "\nINGRESA CORRECTAMENTE LA HORA!!!" << endl;
+        cout << "Introduzca la HORA(6,7,8...) de " << datos[index][1] << endl;
+        cin >> hora;
+        (*indice_hora) = hora - jornada[0];
+    }
+}
+void validar_dia(char*** datos, int *index,char dia_letra, unsigned short int *dia){
+    cout << "Introduzca el DIA (L,M,W...) de " << datos[(*index)][1] << endl;
+    cin >> dia_letra;
+    (*dia)=indice_dia2(dia_letra);
+    while((*dia)==10){
+        cout << "\nINGRESA CORRECTAMENTE EL DIA !!!\n";
+        cout << "Introduzca inicial el DIA [L,M,W,J,V,S] de " << datos[(*index)][1] << endl;
+        cin >> dia_letra;
+        (*dia)=indice_dia2(dia_letra);
+    }
+
+
+}
+
+void reservarHora2(char ***calendario, int dia, int hora,char ***datos,int index ){
+    int l_final = 27;
+    char *copia= new char[l_final];
+
+    beauty(datos[index][1],copia,l_final);
+    for(int k = 0; k<len_char(calendario[hora][dia]);k++)
+        calendario[hora][dia][k]= copia[k];
+
+    delete[] copia;
+
+}
+
+void reservarIndep(char ***calendario, int dia, int hora,char ***datos,int index ){
+    int l_final = 27;
+    char *copia= new char[l_final+1];
+
+    formato_indpendientes(datos[index][1],copia,l_final);
+    for(int k = 0; k<len_char(calendario[hora][dia]);k++)
+        calendario[hora][dia][k]= copia[k];
+
+    delete[] copia;
+
+}
+void horas_independientes2(char ***Matriculados, char ***datos, char ***calendario, int num_clases
+                     , int *jornada){
+    //Ingresar hora por hora
+    unsigned short int hora,indice_hora,dia,HTI;
+    char dia_letra;
+    for(int i = 0;i<num_clases;i++){
+        HTI=char_int(datos[i][3]);
+        while(HTI>0){
+            cout << "Introduzca el DIA (L,M,W...) de " << datos[i][1] << endl;
+            //FALTA HACER VALIDACION
+            cin >> dia_letra;
+            dia=indice_dia2(dia_letra);
+
+            cout << "Introduzca la HORA(6,7,8...) de " << datos[i][1] << endl;
+            //FALTA HACER VALIDACION
+            cin >> hora;
+            indice_hora = hora - jornada[0];
+              char dsp[27] ="        Disponible        ";
+            if(compare(calendario[indice_hora][dia],dsp)){
+                reservarHora(calendario,Matriculados,dia,indice_hora,datos,i);
+                HTI--;
+                cout << "HORA MATRICULADA CON EXITO";
+            }else{
+                cout << "ESTA HORA NO ESTÁ DISPONIBLE. Prueba con otra.";
+            }
+            mostrarCalendario(jornada,calendario);
+        }
+    }
+}
+int indice_dia2(char matriculados){
+    short int dia=0;
+    if(matriculados==76 || matriculados==118) dia=0;
+    if(matriculados==77 || matriculados==109) dia=1;
+    if(matriculados==87 || matriculados==119) dia=2;
+    if(matriculados==74 || matriculados==106) dia=3;
+    if(matriculados==86 || matriculados==118) dia=4;
+    if(matriculados==83 || matriculados==115) dia=5;
+    return dia;
+
+}
+bool verificarDisponibilidad2(char ***calendario ,char ***matriculados,int *jornada, int indice) {
+    unsigned short int rango,dia,horaD=0,horaI;
+
+    for(int i=0;i<2;i++){
+        dia=indice_dia(matriculados[indice][i+1]);
+
+    rango=char_int(matriculados[indice][4])-char_int(matriculados[indice][3]);
+
+    for(int i=0;i<rango;i++){
+        horaI=indice_hora(matriculados,jornada,indice,i);
+        char dsp[27] = "       Disponible       ";
+        if(compare(calendario[horaI][dia],dsp)){
+            horaD++;
+
+        }
+        else return false;
+    }
+    }
+        if(horaD==2*(char_int(matriculados[indice][4])-char_int(matriculados[indice][3]))) return true;
+        else return false;
+}
+bool verificarDisponibilidad(char ***calendario ,char ***matriculados,int *jornada, int indice) {
+    unsigned short int rango,dia,horaD=0,horaI;
+
+    for(int i=0;i<2;i++){
+        dia=indice_dia(matriculados[indice][i+1]);
+
+    rango=char_int(matriculados[indice][4])-char_int(matriculados[indice][3]);
+
+    for(int i=0;i<rango;i++){
+        horaI=indice_hora(matriculados,jornada,indice,i);
+        char dsp[27] = "        Disponible        ";
+        if(compare(calendario[horaI][dia],dsp)){
+            horaD++;
+
+        }
+        else return false;
+    }
+    }
+        if(horaD==2*(char_int(matriculados[indice][4])-char_int(matriculados[indice][3]))) return true;
+        else return false;
+}
+
+
+
+void reservarHora(char ***calendario, char ***matriculados, int dia, int hora,char ***datos,int materia ){
+    int l_final = 27;
+    char *copia= new char[l_final];
+    for(int i=0;i<63;i++){
+        if(compare(*matriculados[materia],*datos[i])){
+            beauty(datos[materia][1],copia,l_final);
+            for(int k = 0; k<len_char(calendario[hora][dia]);k++){
+                calendario[hora][dia][k]= copia[k];
+            }
+            break;
+        }
+    }
+    delete[] copia;
+
+}
+
+
+int indice_dia(char *matriculados){
+    short int dia=0;
+    if(*matriculados==76 || *matriculados==118) dia=0;
+    if(*matriculados==77 || *matriculados==109) dia=1;
+    if(*matriculados==87 || *matriculados==119) dia=2;
+    if(*matriculados==74 || *matriculados==106) dia=3;
+    if(*matriculados==86 || *matriculados==118) dia=4;
+    if(*matriculados==83 || *matriculados==115) dia=5;
+    return dia;
+
+}
+
+int indice_hora(char ***matriculados,int *jornada,int clase, int hora){
+    short int horaClase=0,horaI;
+    horaI=-1;
+    horaClase=char_int(matriculados[clase][3+hora]);
+    for(int j=0;j<jornada[3]-jornada[0];j++){//recorre todas las horas de la jornada
+        if(horaClase==jornada[0]+j){
+            horaI++;
+            break;
+        }
+        else horaI++;
+
+    }
+
+    return horaI;
+}
+
+void matricular_cursos(char ***Base_datos, char*** Matriculadas, unsigned short int *cantidad,int total){
+    /*
+    Base_datos: matriz que contiene toda la informacion
+    Matriculadas: Matriz a llenar con las materias del usuario
+    ***¿que cantidad de memoria almacenar? Es decir, ¿qué cantidad de materias reservar?
+    R/ Asignar por defecto la cantidad total de materias del curso. Garantizo
+    (?)cantidad: Numero de materias que el estudiante va a matricular
+    total: Total de materias en Base de datos
+    [-] Validar que cantidad sea positiva y menor que el maximo de materias
+    [X] Validar que la suma de creditos del estudiante no exceda de 32
+    [X] Validar que Curso ingresado no se repita
+     */
+    //cout << "Ingresa cantidad de Cursos a Matricular";
+    //cin >> *cantidad;
+
+    int cred = 0;
+    int num;
+    int index = 0;//usar como indice de la materia a matricular
+    //se usa para poder acceder al numero de creditos
+    int i = 0;//posicion en Matriculadas
+    int aux= 0;
+    short int opc = 0;
+    cout<<"LISTA DE MATERIAS INGENIERIA ELECTRONICA Y DE TELECOMUNICACIONES"<<endl;
+    mostrar_informacion(Base_datos,total);
+    while(opc!=-1){//si es con cantidad se hace un bucle for
+        // [ ] Pendiente agregar una función que deje ver los cursos que existen
+        cout << "\nSelecciona un numero de la lista de materias\n";
+
+
+        cin >> num;//seleccionar materia de acuerdo a la lista mostrada
+        if(num > 0 && num<=total){//valida indice
+            // Validar si codigo de la materia ya esta matriculado
+            if((!validar_materia(Matriculadas,Base_datos[num-1][0],i,&aux))){
+
+                cred+=char_int(Base_datos[num-1][4]); //aumenta el numero de creditos actuales
+                if(cred <=32){//verificar cantidad de creditos
+
+                    int l = len_char(Base_datos[num-1][0]);
+                    for(int m = 0; m<l;m++){
+                        Matriculadas[i][0][m]=Base_datos[num-1][0][m];//copia contenido en Matriculados
+                    }
+                    Matriculadas[i][0][l] = '\0';
+                    i++;
+                    (*cantidad)++;
+                    cout << "\n La materia " << Base_datos[num-1][1] << " se ha matriculado con EXITO " << endl;
+                }else{
+                    cout << "\nEstas loco. No puedes matricular mas de 32 creditos!!!";
+                    cout << "Ingresa una nueva materia con menos creditos";
+                }
+
+
+            }else cout << "\nERROR al matricular. La materia " << Base_datos[num-1][1] << " ya se encuentra matriculada" <<endl;
+
+        }else cout << "\nIndice de lista incorrecto. Digita bien tu opcion";
+
+        //Pregunta de confirmacion de acuerdo al numero de creditos que lleva
+        if(cred>=8&&cred<=32){
+            cout << "\nDeseas matricular una nueva materia?" << endl;
+            cout << "Presiona 1 para continuar" << endl;
+            cout << "Presiona -1 para salir\n" << endl;
+            cin >> opc;
+        }else{
+            cout << "\nAun no has completado el minimo de creditos para matricular\n";
+        }
+    }
+}
+int saltoschar(char name_file[]){
+    ifstream fin;
+    int saltos = 0;
+    try{
+
+        fin.open(name_file);        //abre el archivo para lectura
+        if(!fin.is_open()){
+            throw '2';
+        }
+
+        while(fin.good()){ //lee caracter a caracter hasta el fin del archivo
+            char temp=fin.get();
+            if(fin.good()){
+                if(temp == '\n'){
+                    saltos++;//contar saltos de linea (cantidad cursos)
+                }
+            }
+        }
+        fin.close();
+        return saltos;
+    }
+    catch (char c){
+        cout<<"Error # "<<c<<": ";
+        if(c=='2'){
+            cout<<"Error al abrir el archivo para escritura.\n";
+        }
+    }
+    catch (...){
+        cout<<"Error no definido\n";
+    }
+    return 1;
+
+
+}
+void leer_cursos(char ***cursos,char name_file[])
+{
+    /*Guardar en una matriz la infromación de cursos
+    */
+
+    char cadena[64]; //Mejor asignar con memoria dinamica??
+    ifstream fin;               //stream de entrada, lectura
+    try{
+
+        fin.open(name_file);        //abre el archivo para lectura
+        if(!fin.is_open()){
+            throw '2';
+        }
+        int saltos = saltoschar(name_file);
+        //ASIGNAR MEMORIA DINAMICA PARA GUARDAR CURSOS-----------------
+
+        int n = saltos+1, m = 5;//dimensiones
+        int p = 33; // longitud  maxima de cada elemento
+        for (int i = 0; i < n; i++) {
+          cursos[i] = new char*[m];
+            for (int j = 0; j < m; j++) {
+                cursos[i][j] = new char[p];
+            }
+        }
+        // ASIGNACIÓN lista individual
+
+        // FINALIZACIÓN DE ASIGNACIÓN--------------------------------
+
+        fin.close();
+        fin.open(name_file);
+        if(!fin.is_open()){
+            throw '2';
+        }
+        for(int i = 0; i<(saltos+1);i++){
+            //recorre linea a linea
+            fin.getline(cadena,64);
+
+            char **lista_individual = new char*[5];
+            for(int i = 0; i<5; i++){
+                lista_individual[i] = new char[33];
+            }
+            //separa cadena leida y guardar en lista
+            //convertir/formatear cadena a matriz(lista de arreglos char)
+            split(cadena,lista_individual,';',5);
+            for (int j = 0; j < 5; j++) {
+                for(int k = 0;k<33;k++){
+                    //añadir matriz anterior a matriz 3D
+                    *(*(*(cursos+i)+j)+k) = *(*(lista_individual+j)+k);
+                    //iterador i (representa la fila)está al inicio
+                }
+            }
+            for(int i = 0; i<5;i++)delete[] lista_individual[i];
+            delete[] lista_individual;
+        }
+
+
+        fin.close();
+    }
+    catch (char c){
+        cout<<"Error # "<<c<<": ";
+        if(c=='2'){
+            cout<<"Error al abrir el archivo para escritura.\n";
+        }
+    }
+    catch (...){
+        cout<<"Error no definido\n";
+    }
+}
+
+void mostrarCalendario(int *jornada, char***calendario) {
+    cout << "     ";
+    char dias[6]={'L','M','W','J','V','S'};
+    for (int j = 0; j < 6; j++) cout <<"            "<< dias[j]<<"             ";
+    cout << endl;
+    if(jornada[0]>jornada[3]){
+        for (int i = 0; i < 24-jornada[0]+jornada[3]; i++) {
+            if(jornada[0]+i>23){
+                if(jornada[0]+i>9) cout<<jornada[0]+i-24<<":"<<jornada[1]<<jornada[2]<<" ";
+                else cout <<jornada[0]+i-24<<":"<<jornada[1]<<jornada[2];
+
+                for (int j = 0; j < 6; j++) cout << calendario[i][j];
+                cout << endl;
+            }
+
+            else{
+                if(jornada[0]+i>9) cout<<jornada[0]+i<<":"<<jornada[1]<<jornada[2];
+                else cout <<jornada[0]+i<<":"<<jornada[1]<<jornada[2]<<" ";
+
+                for (int j = 0; j < 6; j++) cout << calendario[i][j];
+                cout << endl;
+            }
+        }
+
+    }
+
+    else{
+        for (int i = 0; i < jornada[3]-jornada[0]; i++) {
+            if(jornada[0]+i>9) cout<<jornada[0]+i<<":"<<jornada[1]<<jornada[2];
+            else cout <<jornada[0]+i<<":"<<jornada[1]<<jornada[2]<<" ";
+
+            for (int j = 0; j < 6; j++) cout << calendario[i][j]; //aqui debe de ir la funcion que imprima el nombre
+            cout << endl;
+            }
+
+    }
+}
+
+int crearJornada(int *jornada){
+        unsigned short int horai,horaf,horas_jornada;
+        bool valido;
+        do{
+        cout<<"introduzca la hora inicial de su jornada en formato 2400"<<endl;
+        cin>>horai;
+        cout<<"introduzca la hora final de su jornada en formato 2400"<<endl;
+        cin>>horaf;
+
+        if (horai>2400){
+            valido=false;
+            cout<<"Hora invalida"<<endl;
+        }
+        else valido=true;
+        }while(!valido);
+
+            jornada[0]=horai/100;
+            jornada[1]=horai%100;
+            jornada[2]=horai%10;
+            jornada[3]=horaf/100;
+            jornada[1]=horaf%100;
+            jornada[2]=horaf%10;
+
+        if(jornada[0]>jornada[3]) horas_jornada=24-jornada[0]+jornada[3];
+        else horas_jornada=jornada[3]-jornada[0];
+        return horas_jornada;
+        }
+void mostrar_informacion(char*** Base_datos,int total){
+    int ajuste;
+    for(int i = 0;i<total;i++){
+        ajuste=0;
+        cout << i+1 << ". "<<Base_datos[i][1] << "  "  << Base_datos[i][4]<<" Cred";
+        while(len_char(Base_datos[i][1])+len_char(Base_datos[i][0])+ajuste<40){
+              cout<<" ";
+              ajuste++;
+    }
+        if(i%3==0 && i!=0){
+            cout << endl;
+
+        }
+
+    }
+}
+bool validar_materia(char*** Matriculadas, char* codigo,int total, int *index){
+    /*
+     * Codigo ingresado a comparar
+     * index Sera la posicion en la que se encuentra actualmente
+     * Esta funcion es util para validar si una cadena ya se encuentra
+     * en la base de datos, en este caso el codigo
+    */
+    *index = -1;
+    for(int i = 0; i<total; i++){
+        (*index)++;//retorna en indice por referencia
+        if(compare(Matriculadas[i][0],codigo))return true;//el codigo coincide
+    }
+    return false;
+}
+void RestarHora(char *Matricula){
+    short int Hora_original;
+    char Nueva_hora[2]={};
+    Hora_original=char_int(Matricula);
+    int_char(Hora_original-1,len_num(Hora_original),Nueva_hora);
+    for(int i=0;i<len_num(Hora_original);i++){
+        Matricula[i]=Nueva_hora[i];
+    }
+
+}
+
 int dec_10(int a){
     int dec=1;
     for(int i=1;i<a;i++){
@@ -744,6 +717,7 @@ int len_num (int a){
     return longitud;
 }
 
+
 bool compare(char a[], char b[]){
     int t1 = len_char(a);
     int t2 = len_char(b);
@@ -758,6 +732,9 @@ bool compare(char a[], char b[]){
         return false;
     }
 }
+
+
+
 
 void split(char* cadena,char**subcadenas,char sep, int nf){
     //Cadena: Cadena char a "formatear"
@@ -781,6 +758,20 @@ void split(char* cadena,char**subcadenas,char sep, int nf){
 
 }
 
+
+void asignar_memoria(char***matrix,int saltos){
+    int n = saltos+1, m = 5;
+    int p = 20; // longitud  maxima de cada elemento
+
+    matrix = new char**[n];
+
+    for (int i = 0; i < n; i++) {
+      matrix[i] = new char*[m];
+        for (int j = 0; j < m; j++) {
+            matrix[i][j] = new char[p];
+        }
+    }
+}
 void liberar_memoria(char*** matrix, int filas, int columnas){
     for(int i = 0; i<filas;i++){
         for(int j = 0; j<columnas; j++){
@@ -810,7 +801,6 @@ void beauty(char *nombre,char *copia_bonita,int l_final){
         aux++;
     }
 }
-
 void formato_indpendientes(char *nombre_materia,char *copia_indp,int l_final){
     //Agregar la cadena "IND-" al inicio para diferenciarla
     //al momento de invocarla asignar y liberar memoria para copia
