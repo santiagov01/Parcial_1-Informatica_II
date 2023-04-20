@@ -24,13 +24,11 @@ void menu(char***Datos,char***Matriculadas,char***calendario,int jornada[],int s
 
         switch(opcion){
         case 1:{
-            if(!matricular_state){
-
                 matricular_cursos(Datos, Matriculadas, &num_clases,saltos+1);
                 matricular_state=true;
                 break;
-            }
         }
+
         case 2:{
              if(matricular_state){
                  if(!horario_ingresado){
@@ -53,14 +51,14 @@ void menu(char***Datos,char***Matriculadas,char***calendario,int jornada[],int s
                     cout << endl;
                 }
 
-            }else cout << "------NO SE HA INGRESADO ALGUN HORARIO!!!-------"<< endl;
+            }else cout << "------NO SE HA INGRESADO ALGÚN HORARIO!!!-------"<< endl;
             break;
 
         }
         case 4:{
             if(horario_ingresado){
                 if(!asignar_indep){
-                    cout << "Asignacion de materias en proceso...";
+                    cout << "Asignación de materias en proceso...";
                     rellenar(Datos,calendario,Matriculadas,num_clases, jornada);
                     asignar_indep = true;
                 }cout << "Ya se han asignado las horas de estudio independiente" << endl;
@@ -77,8 +75,11 @@ void menu(char***Datos,char***Matriculadas,char***calendario,int jornada[],int s
         default: cout<<"ingrese una opcion valida"<<endl;
         }
 
+
+
        }while(opcion!=0);
 }
+
 
 void rellenar(char ***datos, char ***calendario, char ***Matriculados, int num_clases, int *jornada){
     unsigned short int HTI,tam_jornada;
