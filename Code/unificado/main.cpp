@@ -1,3 +1,5 @@
+#include <iostream>
+#include <Funciones.h>
 using namespace std;
 
 int main()
@@ -6,6 +8,9 @@ int main()
     int saltos = saltoschar(name_file);
     int jornada[6];
     unsigned short int horas_jornada = 0,max_sp=33;
+
+    cout<<"BIENVENIDO AL SISTEMA DE GESTION DE HORARIO"<<endl<<endl;
+    cout<<"Para comenzar creemos su jornada de estudio"<<endl;
     horas_jornada = crearJornada(jornada);
 
     char ***calendario = new char**[25];
@@ -35,25 +40,55 @@ int main()
         }
     }
 //------------------------------------------------------------------------
-    unsigned short int num_clases = 0;
+    unsigned short int num_clases = 0,opcion;
     leer_cursos(Datos,name_file);
-    matricular_cursos(Datos, Matriculadas, &num_clases,saltos+1);
+    do{
+
+        cout<<"Ahora escoga una de las siguientes opciones"<<endl;
+        cout<<"1. Matricular Curso"<<endl;
+        cout<<"2. Ingresar horario de cursos"<<endl;
+        cout<<"3. Ver cursos matriculados"<<endl;
+        cout<<"4. Ingresar horas de trabajo independiente"<<endl;
+        cout<<"5. Mostrar calendario"<<endl;
+        cout<<"0. Salir del programa"<<endl;
+        cin>>opcion;
+
+        switch(opcion){
+        case 1:{
+                matricular_cursos(Datos, Matriculadas, &num_clases,saltos+1);
+                break;
+        }
+
+        case 2:{
+             horario_clases2(Matriculadas, Datos,calendario,num_clases, jornada,saltos+1);
+             break;
+        }
+        case 3:{
+            cout << "\n-----CURSOS MATRICULADOOOS-----" << endl;
+            for(int i = 0;i<num_clases+1;i++){
+                cout << Matriculadas[i][0];
+                cout << " ";
+                cout << endl;
+            }
+             break;
+
+        }
+        case 4:{
+             rellenar(Datos,calendario,Matriculadas,num_clases, jornada);
+             break;
+
+        }
+        case 5:{
+             mostrarCalendario(jornada,calendario);
+             break;
+
+        }
+        default: cout<<"ingrese una opcion valida"<<endl;
+        }
 
 
-    mostrarCalendario(jornada,calendario);
-    horario_clases2(Matriculadas, Datos,calendario,num_clases, jornada,saltos+1);
 
-    //horario_clases(Matriculadas, Datos,calendario,num_clases, jornada);
-    rellenar(Datos,calendario,Matriculadas,num_clases, jornada);
-    mostrarCalendario(jornada,calendario);
-
-    cout << "\n-----CURSOS MATRICULADOOOS-----" << endl;
-    for(int i = 0;i<num_clases+1;i++){
-        cout << Matriculadas[i][0];
-        cout << " ";
-        cout << endl;
-    }
-
+       }while(opcion!=0);
 
 //--------------------------LIBERAR MEMORIA-----------------------------
     for(int i = 0; i<12;i++){
@@ -76,3 +111,4 @@ int main()
     return 0;
 
 }
+
