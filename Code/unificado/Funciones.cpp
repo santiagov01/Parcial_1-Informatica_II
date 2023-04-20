@@ -24,11 +24,13 @@ void menu(char***Datos,char***Matriculadas,char***calendario,int jornada[],int s
 
         switch(opcion){
         case 1:{
+            if(!matricular_state){
+
                 matricular_cursos(Datos, Matriculadas, &num_clases,saltos+1);
                 matricular_state=true;
                 break;
+            }
         }
-
         case 2:{
              if(matricular_state){
                  if(!horario_ingresado){
@@ -40,7 +42,7 @@ void menu(char***Datos,char***Matriculadas,char***calendario,int jornada[],int s
 
              break;
         }
-        ccase 3:{
+        case 3:{
             int index;
             if(horario_ingresado){
                 cout << "\n-----CURSOS MATRICULADOOOS-----" << endl;
@@ -51,10 +53,8 @@ void menu(char***Datos,char***Matriculadas,char***calendario,int jornada[],int s
                     cout << endl;
                 }
 
-            }else cout << "------NO SE HA INGRESADO ALGÚN HORARIO!!!-------"<< endl;
+            }else cout << "------NO SE HA INGRESADO ALGUN HORARIO!!!-------"<< endl;
             break;
-
-        }
 
         }
         case 4:{
@@ -76,8 +76,6 @@ void menu(char***Datos,char***Matriculadas,char***calendario,int jornada[],int s
         }
         default: cout<<"ingrese una opcion valida"<<endl;
         }
-
-
 
        }while(opcion!=0);
 }
@@ -102,100 +100,6 @@ void rellenar(char ***datos, char ***calendario, char ***Matriculados, int num_c
         }
     }
 }
-
-void horario_clases(char ***Matriculados, char ***datos, char ***calendario, int num_clases
-    , int *jornada){
-      unsigned short int hora,dia;
-
-
-      for(int i=0;i<num_clases;i++){ //numero de clases de matriz matriculados
-
-          //creo las matrices donde van a ir la hora y los dias de cada materia
-
-          char **dias=new char*[2];
-          for(int i=0;i<2;i++){
-              dias[i]=new char[1];
-          }
-
-          char **horas=new char*[2];
-          for(int i=0;i<2;i++){
-              horas[i]=new char[1];
-          }
-
-          for(int j=0;j<63;j++){
-              if(compare(*Matriculados[i],*datos[j])){ //puede elimin
-                   //HTD=char_int(datos[i][2]);
-                   cout<<"introduzca los dias de "<<datos[j][1]<<" en formato dia1-dia2"<<endl;
-                   cin>>Matriculados[i][1];
-
-                   split(Matriculados[i][1],dias,'-',2);
-
-                   for(int h=0;h<2;h++){
-                       for(int k=0;k<2;k++){
-                           Matriculados[i][h+1][k] = dias[h][k];
-                       }
-                   }
-                   cout<<"introduzca las horas de "<<datos[j][1]<<" en formato HoraInicial-Horafinal"<<endl;
-                   cin>>Matriculados[i][3];
-
-                   split(Matriculados[i][3],horas,'-',2);
-
-                   for(int h=0;h<2;h++){
-                       for(int k=0;k<3;k++){
-                           Matriculados[i][h+3][k] = horas[h][k];
-                       }
-                   }
-                   RestarHora(Matriculados[i][4]);
-
-
-
-                   if(verificarDisponibilidad(calendario,Matriculados,jornada,i)==false){
-                        cout<<"Esta hora no esta disponible"<<endl;
-                        i--;
-                        break;
-                   }
-                   else{
-                       for(int t=0;t<2;t++){
-                           for(int c=0;c<2;c++){
-                               dia=indice_dia(Matriculados[i][c+1]);
-                               hora=indice_hora(Matriculados,jornada,i,t);
-                               reservarHora(calendario,Matriculados,dia,hora,datos,i);
-                           }
-
-                       }
-
-
-                   }
-
-
-
-              }
-
-          }
-
-          for(int k=0;k<2;k++){
-              delete[] dias[k];
-          }
-          delete[] dias;
-
-          for(int k=0;k<2;k++){
-              delete[] horas[k];
-          }
-          delete[] horas;
-
-
-
-          }
-      for(int i=0;i<num_clases;i++){
-          for(int j=0;j<5;j++){
-              cout<<Matriculados[i][j]<<" ";
-          }
-          cout<<endl;
-      }
-
-
-}
-
 
 void horario_clases2(char ***Matriculados, char ***datos, char ***calendario, int num_clases
                      , int *jornada, int saltos){
@@ -306,7 +210,7 @@ void horas_independientes2(char ***Matriculados, char ***datos, char ***calendar
 }
 int indice_dia2(char matriculados){
     short int dia=0;
-    if(matriculados==76 || matriculados==118) dia=0;
+    if(matriculados==76 || matriculados==108) dia=0;
     if(matriculados==77 || matriculados==109) dia=1;
     if(matriculados==87 || matriculados==119) dia=2;
     if(matriculados==74 || matriculados==106) dia=3;
@@ -422,7 +326,7 @@ void matricular_cursos(char ***Base_datos, char*** Matriculadas, unsigned short 
 
     int cred = 0;
     int num;
-    int index = 0;//usar como indice de la materia a matricular
+
     //se usa para poder acceder al numero de creditos
     int i = 0;//posicion en Matriculadas
     int aux= 0;
@@ -522,7 +426,7 @@ void leer_cursos(char ***cursos,char name_file[])
         //ASIGNAR MEMORIA DINAMICA PARA GUARDAR CURSOS-----------------
 
         int n = saltos+1, m = 5;//dimensiones
-        int p = 33; // longitud  maxima de cada elemento
+        int p = 27; // longitud  maxima de cada elemento
         for (int i = 0; i < n; i++) {
           cursos[i] = new char*[m];
             for (int j = 0; j < m; j++) {
@@ -544,13 +448,13 @@ void leer_cursos(char ***cursos,char name_file[])
 
             char **lista_individual = new char*[5];
             for(int i = 0; i<5; i++){
-                lista_individual[i] = new char[33];
+                lista_individual[i] = new char[27];
             }
             //separa cadena leida y guardar en lista
             //convertir/formatear cadena a matriz(lista de arreglos char)
             split(cadena,lista_individual,';',5);
             for (int j = 0; j < 5; j++) {
-                for(int k = 0;k<33;k++){
+                for(int k = 0;k<27;k++){
                     //añadir matriz anterior a matriz 3D
                     *(*(*(cursos+i)+j)+k) = *(*(lista_individual+j)+k);
                     //iterador i (representa la fila)está al inicio
@@ -613,6 +517,9 @@ void mostrarCalendario(int *jornada, char***calendario) {
 }
 
 int crearJornada(int *jornada){
+        cout << "****************************************************" << endl;
+        cout<<"BIENVENIDO AL SISTEMA DE GESTION DE HORARIO"<<endl<<endl;
+        cout << "****************************************************" << endl;
         unsigned short int horai,horaf,horas_jornada;
         bool valido;
         do{
