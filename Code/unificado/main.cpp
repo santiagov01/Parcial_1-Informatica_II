@@ -24,7 +24,7 @@ int main()
                 Matriculadas[i][j] = new char[10];
             }
         }
-        char dsp[33] = "           Disponible           ";
+        char dsp[27] ="        Disponible        ";
         for(int i =0;i< horas_jornada;i++){
             calendario[i] = new char *[6];
             for(int j=0;j<6;j++){
