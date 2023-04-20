@@ -4,10 +4,10 @@ using namespace std;
 
 int main()
 {
-    char name_file[32]="cursos.txt";
+    char name_file[32]="Base_de_Datos.txt";
         int saltos = saltoschar(name_file);
         int jornada[6];
-        unsigned short int horas_jornada = 0,max_sp=33;
+        unsigned short int horas_jornada = 0,max_sp=27;
 
 
         horas_jornada = crearJornada(jornada);
