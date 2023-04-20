@@ -40,17 +40,21 @@ void menu(char***Datos,char***Matriculadas,char***calendario,int jornada[],int s
 
              break;
         }
-        case 3:{
+        ccase 3:{
+            int index;
             if(horario_ingresado){
                 cout << "\n-----CURSOS MATRICULADOOOS-----" << endl;
-                for(int i = 0;i<num_clases+1;i++){
-                    cout << Matriculadas[i][0];
+                for(int i = 0;i<num_clases;i++){
+                    validar_materia(Datos,Matriculadas[i][0],saltos,&index);
+                    cout << Datos[index][0]<<" "<<Datos[index][1];
                     cout << " ";
                     cout << endl;
                 }
 
             }else cout << "------NO SE HA INGRESADO ALGÚN HORARIO!!!-------"<< endl;
             break;
+
+        }
 
         }
         case 4:{
